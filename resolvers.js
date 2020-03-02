@@ -1,14 +1,19 @@
-
 const todos = [
-    { id: 0, task: "Learn Vue.js", completed: false },
-    { id: 1, task: "Learn Apollo", completed: true }
+    { task: 'Learn Vue.js', completed: false },
+    { task: 'Learn Apollo', completed: true }
 ];
 
 const resolvers = {
     Query: {
-        getTodos: () => (
-            todos
-        )
+        getTodos: () => todos
+    },
+    Mutation: {
+        // Destructure the second parameter "args"
+        addTodo: (_, { task, completed }) => {
+            const todo = { task, completed };
+            todos.push(todo);
+            return todo;
+        }
     }
 };
 

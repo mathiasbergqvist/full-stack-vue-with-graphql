@@ -4,8 +4,10 @@ const typeDefs = gql`
     type Query {
         getTodos: [Todo]
     }
+    type Mutation {
+        addTodo(task: String, completed: Boolean): Todo
+    }
     type Todo {
-        id: ID!
         task: String
         completed: Boolean
     }
