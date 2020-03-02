@@ -2,7 +2,7 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
     type Query {
-        dummy: String
+        getTodos: [Todo]
     }
     type Todo {
         id: ID!

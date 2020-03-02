@@ -1,13 +1,10 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer, gql } = require('apollo-server');
 const typeDefs = require('./schema');
-
-const todos = [
-    { task: "Learn Vue.js", completed: false },
-    { task: "Learn Apollo", completed: true }
-];
+const resolvers = require('./resolvers');
 
 const server = new ApolloServer({
-    typeDefs
+    typeDefs,
+    resolvers
 });
 
 server.listen().then(({ url }) => {
