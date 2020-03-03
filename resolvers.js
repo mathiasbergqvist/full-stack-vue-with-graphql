@@ -1,20 +1,23 @@
-const todos = [
-    { task: 'Learn Vue.js', completed: false },
-    { task: 'Learn Apollo', completed: true }
-];
-
-const resolvers = {
+module.exports = {
     Query: {
-        getTodos: () => todos
+        getUser: () => null 
     },
     Mutation: {
-        // Destructure the second parameter "args"
-        addTodo: (_, { task, completed }) => {
-            const todo = { task, completed };
-            todos.push(todo);
-            return todo;
+        // Object destruct args, context
+        signupUser: async (_, { username, email, password }, { User }) => {
+            const user = await User.findOne({ username });
+
+            if (user) {
+                throw new Error('User already exists');
+            }
+
+            const newUser = await new User({
+                username,
+                email,
+                password
+            }).save();
+
+            return newUser;
         }
     }
 };
-
-module.exports = resolvers;

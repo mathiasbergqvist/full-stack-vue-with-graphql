@@ -1,5 +1,5 @@
 type Query {
-    getUsers: [User]
+    getUser: User
 }
 
 type User {
@@ -26,6 +26,10 @@ type Post {
 type Message {
     _id: ID
     messageBody: String!
-    messageDate: String
+    messageDate: String!
     messageUser: User!
+}
+
+type Mutation {
+    signupUser(username: String!, email: String!, password: String!): User!
 }
