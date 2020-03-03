@@ -1,6 +1,6 @@
 module.exports = {
     Query: {
-        getUser: () => null 
+        getUser: () => null
     },
     Mutation: {
         // Object destruct args, context
@@ -18,6 +18,20 @@ module.exports = {
             }).save();
 
             return newUser;
+        },
+        addPost: async (
+            _,
+            { title, imageUrl, categories, description, creatorId },
+            { Post }
+        ) => {
+            const newPost = await new Post({
+                title,
+                imageUrl,
+                categories,
+                description,
+                createdBy: creatorId
+            }).save();
+            return newPost;
         }
     }
 };
