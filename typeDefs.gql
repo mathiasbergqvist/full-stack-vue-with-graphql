@@ -1,5 +1,5 @@
 type Query {
-    getUser: User
+    getPosts: [Post]
 }
 
 type User {
