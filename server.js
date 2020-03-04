@@ -1,13 +1,14 @@
 const { ApolloServer } = require('apollo-server');
-const resolvers = require('./resolvers');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 
-// Read type defs from file path
+// Import typeDefs and resolvers
 const filePath = path.join(__dirname, 'typeDefs.gql');
 const typeDefs = fs.readFileSync(filePath, 'utf-8');
+const resolvers = require('./resolvers');
 
+// Import env variables
 require('dotenv').config({ path: 'variables.env' });
 
 const User = require('./models/User');
@@ -20,7 +21,7 @@ mongoose
     .catch(err => console.err);
 
 
-// Start the Apollo Server
+// Start the Apollo/GQL Server
 const server = new ApolloServer({
     typeDefs,
     resolvers,

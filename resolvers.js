@@ -1,4 +1,5 @@
 module.exports = {
+    // Query
     Query: {
         getPosts: async (_, args, { Post }) => {
             const posts = await Post.find({})
@@ -10,6 +11,7 @@ module.exports = {
             return posts;
         }
     },
+    // Mutations
     Mutation: {
         // Object destruct args, context
         signupUser: async (_, { username, email, password }, { User }) => {
