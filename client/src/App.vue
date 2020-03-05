@@ -4,9 +4,9 @@
     <v-navigation-drawer app temporaray fixed v-model="sideNav">
       <v-toolbar color="accent" dark flat>
         <v-app-bar-nav-icon @click="toggleSideNav"></v-app-bar-nav-icon>
-        <roter-link to="/" tag="span" style="cursor: pointer">
+        <router-link to="/" tag="span" style="cursor: pointer">
           <h1 class="title pl-3">VueShare</h1>
-        </roter-link>
+        </router-link>
       </v-toolbar>
       <v-divider></v-divider>
       <!-- Side Navabar Links -->
@@ -24,7 +24,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-card color="primary" flat height="64px" tile>
+    <v-card color="primary" height="64px" tile>
       <v-toolbar color="primary" dark>
         <!-- App title  -->
         <v-app-bar-nav-icon @click="toggleSideNav"></v-app-bar-nav-icon>
@@ -49,7 +49,6 @@
             :to="item.link"
             style="width: 100px"
             icon
-            flat
           >
             <v-icon left class="hidden-sm-only">{{item.icon}}</v-icon>
             {{item.title}}
@@ -60,7 +59,9 @@
     <!-- App content -->
     <main>
       <v-container class="mt-4">
-        <router-view />
+        <transition name="fade">
+          <router-view />
+        </transition>
       </v-container>
     </main>
   </v-app>
@@ -97,3 +98,21 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-property: all;
+    transition-duration: 0.25s;
+  }
+
+  .fade-enter-active {
+    transition-delay: 0.25s;
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+    transform: translateY(-25px);
+    opacity: 0;
+  }
+</style>
