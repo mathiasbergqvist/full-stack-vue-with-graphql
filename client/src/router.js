@@ -7,10 +7,10 @@ import Profile from './components/Auth/Profile.vue';
 import Signin from './components/Auth/Signin.vue';
 import Signup from './components/Auth/Signup.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  mode: "history",
   // base: process.env.BASE_URL,
   routes: [
     {
@@ -44,4 +44,4 @@ export default new Router({
       component: Signup
     },
   ]
-})
+});
