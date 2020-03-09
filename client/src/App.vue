@@ -16,9 +16,7 @@
             <v-icon>{{item.icon}}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>
-              {{item.title}}
-            </v-list-item-title>
+            <v-list-item-title>{{item.title}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -73,7 +71,7 @@ export default {
   data() {
     return {
       sideNav: false
-    }
+    };
   },
   computed: {
     horizontalNavItem() {
@@ -100,19 +98,19 @@ export default {
 </script>
 
 <style scoped>
-  .fade-enter-active,
-  .fade-leave-active {
-    transition-property: all;
-    transition-duration: 0.25s;
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition-property: all;
+  transition-duration: 0.25s;
+}
 
-  .fade-enter-active {
-    transition-delay: 0.25s;
-  }
+.fade-enter-active {
+  transition-delay: 0.25s;
+}
 
-  .fade-enter,
-  .fade-leave-active {
-    transform: translateY(-25px);
-    opacity: 0;
-  }
+.fade-enter,
+.fade-leave-active {
+  transform: translateY(-25px);
+  opacity: 0;
+}
 </style>
