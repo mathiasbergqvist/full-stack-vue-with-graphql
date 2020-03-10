@@ -16,18 +16,33 @@ import gql from "graphql-tag";
 
 export default {
   name: "Home",
+  data() {
+    return {
+      posts: []
+    };
+  },
   apollo: {
-    getPosts: gql`
-      query {
-        getPosts {
-          _id
-          title
-          imageUrl
-          description
-          likes
+    getPosts: {
+      // Using smart query to retrieve posts
+      query: gql`
+        query {
+          getPosts {
+            _id
+            title
+            imageUrl
+            description
+            likes
+          }
+        }
+      `,
+      result({ data, loading, networkStatus }) {
+        if (!loading) {
+          // Pass results to vue compoent
+          this.posts = data.getPosts;
+          console.log("network status", networkStatus);
         }
       }
-    `
+    }
   }
 };
 </script>
