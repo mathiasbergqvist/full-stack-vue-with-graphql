@@ -6,10 +6,22 @@ import { apolloClient } from "./main";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    posts: [],
+    loading: false
+  },
+  // Mutations to the store - update our state
+  mutations: {
+    setPosts: (state, payload) => {
+      state.posts = payload;
+    },
+    setLoading: (state, payload) => {
+      state.loading = payload;
+    }
+  },
   actions: {
-    getPosts: () => {
+    getPosts: ({ commit }) => {
+      commit("setLoading", true);
       // Use ApolloClient to fire getPosts query
       apolloClient
         .query({
@@ -25,12 +37,20 @@ export default new Vuex.Store({
             }
           `
         })
-        .then(data => {
-          console.log("getPosts data", data);
+        .then(({ data }) => {
+          // Get data from actions to state via mutations
+          // commit passes data from actions to along to mutation funcitons
+          commit("setPosts", data.getPosts);
+          commit("setLoading", false);
         })
         .catch(err => {
-          console.error("getPosts error", err);
+          commit("setLoading", false);
         });
     }
+  },
+  // Getters for store
+  getters: {
+    posts: state => state.posts,
+    loading: state => state.loading
   }
 });
