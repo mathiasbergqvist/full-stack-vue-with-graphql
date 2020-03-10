@@ -1,5 +1,6 @@
 <template>
-  <v-container text-xs-center v-if="getPosts">
+  <div>Home</div>
+  <!-- <v-container text-xs-center v-if="getPosts">
     <v-flex xs12>
       <v-carousel v-bind="{ 'cycle': true }" interval="3000">
         <v-carousel-item v-for="post in getPosts" :key="post._id" :src="post.imageUrl">
@@ -7,7 +8,7 @@
         </v-carousel-item>
       </v-carousel>
     </v-flex>
-  </v-container>
+  </v-container>-->
 </template>
 
 <script>
@@ -15,32 +16,14 @@ import gql from "graphql-tag";
 
 export default {
   name: "Home",
-  data() {
-    return {
-      posts: []
-    };
+  // Lifecycle hook for component created
+  created() {
+    this.handleGetCarouselPosts();
   },
-  apollo: {
-    getPosts: {
-      // Using smart query to retrieve posts
-      query: gql`
-        query {
-          getPosts {
-            _id
-            title
-            imageUrl
-            description
-            likes
-          }
-        }
-      `,
-      result({ data, loading, networkStatus }) {
-        if (!loading) {
-          // Pass results to vue compoent
-          this.posts = data.getPosts;
-          console.log("network status", networkStatus);
-        }
-      }
+  methods: {
+    handleGetCarouselPosts() {
+      //Reach out to the vuex store, fire an action that gets posts from carousel
+      this.$store.dispatch("getPosts");
     }
   }
 };
