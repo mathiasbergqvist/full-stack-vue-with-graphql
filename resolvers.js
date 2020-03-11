@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 module.exports = {
   // Query
   Query: {
@@ -30,6 +32,18 @@ module.exports = {
       }).save();
 
       return newUser;
+    },
+    singninUser: async (_, { username, password }, { User }) => {
+      const user = await User.findOne({ username });
+      if (!user) {
+        throw new Error("User not found!");
+      }
+      // Compare paswords using bcrypt
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        throw new Error("Invalid Password!");
+      }
+      return user;
     },
     addPost: async (
       _,
