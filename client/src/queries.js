@@ -20,7 +20,7 @@ export const GET_POSTS = gql`
 /** USER MUTATIONS */
 export const SIGNIN_USER = gql`
   mutation($username: String!, $password: String!) {
-    signinUser($username, $password) {
+    signinUser(username: $username, password: $password) {
       token
     }
   }

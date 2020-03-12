@@ -37,7 +37,7 @@ module.exports = {
 
       return { token: createToken(newUser, process.env.SECRET, "1hr") };
     },
-    singninUser: async (_, { username, password }, { User }) => {
+    signinUser: async (_, { username, password }, { User }) => {
       const user = await User.findOne({ username });
       if (!user) {
         throw new Error("User not found!");

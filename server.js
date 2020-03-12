@@ -16,9 +16,12 @@ const Post = require("./models/Post");
 
 // Connect to the MongoDB database
 mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true })
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log("DB connected"))
-  .catch(err => console.err);
+  .catch(err => console.error(err));
 
 // Start the Apollo/GQL Server
 const server = new ApolloServer({
