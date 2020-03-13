@@ -50,5 +50,10 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
+  render: h => h(App),
+  // Lifecycle method that runs when the application is created
+  created() {
+    // execute getCurrentUser query
+    this.$store.dispatch("getCurrentUser");
+  }
 }).$mount("#app");
