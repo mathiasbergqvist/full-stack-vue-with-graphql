@@ -9,6 +9,17 @@ const createToken = (user, secret, expiresIn) => {
 module.exports = {
   // Query
   Query: {
+    getCurrentUser: async (_, _args, { User, currentUser }) => {
+      console.log("getCurrentUser", currentUser);
+      if (!currentUser) {
+        return null;
+      }
+      const user = User.findOne({ username: currentUser.username }).populate({
+        path: "favorites",
+        model: "Post"
+      });
+      return user;
+    },
     getPosts: async (_, args, { Post }) => {
       const posts = await Post.find({})
         .sort({ createdDate: "desc" })
