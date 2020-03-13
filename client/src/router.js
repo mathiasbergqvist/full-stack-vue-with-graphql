@@ -1,11 +1,12 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './components/Home.vue';
-import AddPost from './components/Posts/AddPost.vue';
-import Posts from './components/Posts/Posts.vue';
-import Profile from './components/Auth/Profile.vue';
-import Signin from './components/Auth/Signin.vue';
-import Signup from './components/Auth/Signup.vue';
+import Vue from "vue";
+import Router from "vue-router";
+import Home from "./components/Home.vue";
+import AddPost from "./components/Posts/AddPost.vue";
+import Posts from "./components/Posts/Posts.vue";
+import Profile from "./components/Auth/Profile.vue";
+import Signin from "./components/Auth/Signin.vue";
+import Signup from "./components/Auth/Signup.vue";
+import AuthGuard from "./AuthGuard";
 
 Vue.use(Router);
 
@@ -14,34 +15,35 @@ export default new Router({
   // base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'Home',
+      path: "/",
+      name: "Home",
       component: Home
     },
     {
-      path: '/posts',
-      name: 'Posts',
+      path: "/posts",
+      name: "Posts",
       component: Posts
     },
     {
-      path: '/posts/add',
-      name: 'Add Post',
+      path: "/posts/add",
+      name: "Add Post",
       component: AddPost
     },
     {
-      path: '/profile',
-      name: 'Profile',
-      component: Profile
+      path: "/profile",
+      name: "Profile",
+      component: Profile,
+      beforeEnter: AuthGuard
     },
     {
-      path: '/signin',
-      name: 'Signin',
+      path: "/signin",
+      name: "Signin",
       component: Signin
     },
     {
-      path: '/signup',
-      name: 'Singup',
+      path: "/signup",
+      name: "Singup",
       component: Signup
-    },
+    }
   ]
 });
