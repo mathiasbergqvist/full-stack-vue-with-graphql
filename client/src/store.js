@@ -79,6 +79,7 @@ export default new Vuex.Store({
   // Getters for store
   getters: {
     posts: state => state.posts,
+    user: state => state.user,
     loading: state => state.loading
   }
 });
