@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { apolloClient } from "./main";
-import { GET_POSTS, SIGNIN_USER } from "./queries";
+import { GET_POSTS, SIGNIN_USER, GET_CURRENT_USER } from "./queries";
 
 Vue.use(Vuex);
 
@@ -20,6 +20,22 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    getCurrentUser: ({ commit }) => {
+      console.log("getCurrentUser");
+      commit("setLoading", true);
+      apolloClient
+        .query({
+          query: GET_CURRENT_USER
+        })
+        .then(({ data }) => {
+          commit("setLoading", false);
+          console.log(data.getCurrentUser);
+        })
+        .catch(err => {
+          console.error("getCurrentUser", err);
+          commit("setLoading", false);
+        });
+    },
     getPosts: ({ commit }) => {
       commit("setLoading", true);
       // Use ApolloClient to fire getPosts query
@@ -30,8 +46,8 @@ export default new Vuex.Store({
         .then(({ data }) => {
           // Get data from actions to state via mutations
           // commit passes data from actions to along to mutation funcitons
-          commit("setPosts", data.getPosts);
           commit("setLoading", false);
+          commit("setPosts", data.getPosts);
         })
         .catch(err => {
           commit("setLoading", false);
