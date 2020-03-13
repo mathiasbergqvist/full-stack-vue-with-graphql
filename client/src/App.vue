@@ -19,6 +19,15 @@
             <v-list-item-title>{{item.title}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!-- Signout list item -->
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>mdi-exit-to-app</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Singout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -45,11 +54,25 @@
             v-for="item in horizontalNavItem"
             :key="item.title"
             :to="item.link"
-            style="width: 100px"
+            style="width: 120px"
             icon
           >
             <v-icon left class="hidden-sm-only">{{item.icon}}</v-icon>
             {{item.title}}
+          </v-btn>
+
+          <!-- Profile button -->
+          <v-btn to="/profile" v-if="user" style="width: 120px" icon>
+            <v-icon class="hidden-sm-only" left>mdi-account-box</v-icon>
+            <v-badge right color="blue darken-2">
+              <span slot="badge">1</span>
+              Profile
+            </v-badge>
+          </v-btn>
+
+          <!-- Signout button -->
+          <v-btn to="/profile" v-if="user" style="width: 120px" icon>
+            <v-icon class="hidden-sm-only" left>mdi-exit-to-app</v-icon>Signout
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
@@ -66,6 +89,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "App",
   data() {
@@ -74,19 +99,32 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["user"]),
     horizontalNavItem() {
-      return [
+      let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
         { icon: "mdi-lock-open", title: "Sign In", link: "/signin" },
         { icon: "mdi-star", title: "Sign Up", link: "/signup" }
       ];
+      if (this.user) {
+        items = [{ icon: "mdi-chat", title: "Posts", link: "/posts" }];
+      }
+      return items;
     },
     sideNavItems() {
-      return [
+      let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
         { icon: "mdi-lock-open", title: "Sign In", link: "/signin" },
         { icon: "mdi-star", title: "Sign Up", link: "/signup" }
       ];
+      if (this.user) {
+        items = [
+          { icon: "mdi-chat", title: "Posts", link: "/posts" },
+          { icon: "mdi-star", title: "Create Post", link: "/post/add" },
+          { icon: "mdi-account-box", title: "Profile", link: "/profile" }
+        ];
+      }
+      return items;
     }
   },
   methods: {
