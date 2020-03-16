@@ -17,20 +17,44 @@
     <v-layout row wrap>
       <v-flex xs12 sm6 offset-sm3>
         <v-card class="form-container" color="secondary" dark>
-          <v-form @submit.prevent="handleSinginUser">
+          <v-form
+            v-model="isFormValid"
+            @submit.prevent="handleSinginUser"
+            lazy-validation
+            ref="form"
+          >
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="username" label="Username" required></v-text-field>
+                <v-text-field
+                  prepend-icon="mdi-face"
+                  :rules="usernameRules"
+                  v-model="username"
+                  label="Username"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="password" label="Password" type="password" required></v-text-field>
+                <v-text-field
+                  prepend-icon="mdi-grain"
+                  :rules="passwordRules"
+                  v-model="password"
+                  label="Password"
+                  type="password"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12">
-                <v-btn :loading="loading" class="singup-submit" color="accent" type="submit">
+                <v-btn
+                  :loading="loading"
+                  class="singup-submit"
+                  color="accent"
+                  type="submit"
+                  :disabled="!isFormValid"
+                >
                   <template v-slot:loader>
                     <span class="custom-loader">
                       <v-icon light>mdi-cached</v-icon>
@@ -58,8 +82,23 @@ export default {
   name: "Signin",
   data() {
     return {
+      isFormValid: true,
       username: "",
-      password: ""
+      password: "",
+      usernameRules: [
+        // Check if username in input
+        username => !!username || "Username is required",
+        // Make sure username is less than 10 characters
+        username =>
+          username.length < 10 || "Username must be less than 10 characters"
+      ],
+      passwordRules: [
+        // Check if password in input
+        password => !!password || "Password is required",
+        // Make sure password is less than 7 characters
+        password =>
+          password.length >= 6 || "Password must be at least 6 characters"
+      ]
     };
   },
   computed: {
@@ -75,10 +114,15 @@ export default {
   },
   methods: {
     handleSinginUser() {
-      this.$store.dispatch("signinUser", {
-        username: this.username,
-        password: this.password
-      });
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("signinUser", {
+          username: this.username,
+          password: this.password
+        });
+      }
+    },
+    isButtonDisabled() {
+      return !this.$refs.form.validate();
     }
   }
 };
