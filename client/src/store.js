@@ -68,6 +68,7 @@ export default new Vuex.Store({
     signinUser: ({ commit }, payload) => {
       // Clear errors upon login
       commit("clearError");
+      commit("setLoading", true);
       // Clear local storage before signing in (in case token is malformatted)
       localStorage.setItem("token", "");
       apolloClient
@@ -76,12 +77,14 @@ export default new Vuex.Store({
           variables: payload
         })
         .then(({ data }) => {
+          commit("setLoading", false);
           // Set token in local storage
           localStorage.setItem("token", data.signinUser.token);
           // To make sure method is run in main.js (we run getCurrentUser), reload the page
           router.go();
         })
         .catch(err => {
+          commit("setLoading", false);
           commit("setError", err);
         });
     },

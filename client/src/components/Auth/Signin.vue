@@ -30,7 +30,14 @@
             </v-row>
             <v-row>
               <v-col cols="12">
-                <v-btn class="singup-submit" color="accent" type="submit">Sing in</v-btn>
+                <v-btn :loading="loading" class="singup-submit" color="accent" type="submit">
+                  <template v-slot:loader>
+                    <span class="custom-loader">
+                      <v-icon light>mdi-cached</v-icon>
+                    </span>
+                  </template>
+                  Sing in
+                </v-btn>
                 <h3>
                   <span>Don't have an account yet?&#32;</span>
                   <router-link to="/signup">Singup</router-link>
@@ -56,7 +63,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["error", "user"])
+    ...mapGetters(["loading", "error", "user"])
   },
   watch: {
     user(value) {
@@ -87,5 +94,41 @@ export default {
 }
 .singup-submit {
   margin-bottom: 15px;
+}
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
