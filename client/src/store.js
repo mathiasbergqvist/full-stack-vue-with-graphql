@@ -11,7 +11,8 @@ export default new Vuex.Store({
     posts: [],
     user: null,
     loading: false,
-    error: null
+    error: null,
+    authError: null
   },
   // Mutations to the store - update our state
   mutations: {
@@ -28,7 +29,10 @@ export default new Vuex.Store({
       state.error = payload;
     },
     clearError: state => (state.error = null),
-    clearUser: state => (state.user = null)
+    clearUser: state => (state.user = null),
+    setAuthError: (state, payload) => {
+      state.authError = payload;
+    }
   },
   actions: {
     getCurrentUser: ({ commit }) => {
@@ -104,6 +108,7 @@ export default new Vuex.Store({
     posts: state => state.posts,
     user: state => state.user,
     loading: state => state.loading,
-    error: state => state.error
+    error: state => state.error,
+    authError: state => state.authError
   }
 });
