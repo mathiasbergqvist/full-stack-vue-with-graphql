@@ -53,18 +53,18 @@
                   class="singup-submit"
                   color="accent"
                   type="submit"
-                  :disabled="!isFormValid"
+                  :disabled="!isFormValid || loading"
                 >
                   <template v-slot:loader>
                     <span class="custom-loader">
                       <v-icon light>mdi-cached</v-icon>
                     </span>
                   </template>
-                  Sing in
+                  Signin
                 </v-btn>
                 <h3>
                   <span>Don't have an account yet?&#32;</span>
-                  <router-link to="/signup">Singup</router-link>
+                  <router-link to="/signup">Signup</router-link>
                 </h3>
               </v-col>
             </v-row>

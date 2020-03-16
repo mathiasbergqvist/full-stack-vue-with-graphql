@@ -1,7 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { apolloClient } from "./main";
-import { GET_POSTS, SIGNIN_USER, GET_CURRENT_USER } from "./queries";
+import {
+  GET_POSTS,
+  SIGNIN_USER,
+  SIGNUP_USER,
+  GET_CURRENT_USER
+} from "./queries";
 import router from "./router";
 
 Vue.use(Vuex);
@@ -73,8 +78,6 @@ export default new Vuex.Store({
       // Clear errors upon login
       commit("clearError");
       commit("setLoading", true);
-      // Clear local storage before signing in (in case token is malformatted)
-      localStorage.setItem("token", "");
       apolloClient
         .mutate({
           mutation: SIGNIN_USER,
@@ -84,6 +87,27 @@ export default new Vuex.Store({
           commit("setLoading", false);
           // Set token in local storage
           localStorage.setItem("token", data.signinUser.token);
+          // To make sure method is run in main.js (we run getCurrentUser), reload the page
+          router.go();
+        })
+        .catch(err => {
+          commit("setLoading", false);
+          commit("setError", err);
+        });
+    },
+    signupUser: ({ commit }, payload) => {
+      // Clear errors upon login
+      commit("clearError");
+      commit("setLoading", true);
+      apolloClient
+        .mutate({
+          mutation: SIGNUP_USER,
+          variables: payload
+        })
+        .then(({ data }) => {
+          commit("setLoading", false);
+          // Set token in local storage
+          localStorage.setItem("token", data.signupUser.token);
           // To make sure method is run in main.js (we run getCurrentUser), reload the page
           router.go();
         })
