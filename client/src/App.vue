@@ -2,7 +2,7 @@
   <v-app style="background: #fcfcfa">
     <!-- Side navbar -->
     <v-navigation-drawer app temporaray fixed v-model="sideNav">
-      <v-toolbar color="accent" dark flat>
+      <v-toolbar color="accent" dark>
         <v-app-bar-nav-icon @click="toggleSideNav"></v-app-bar-nav-icon>
         <router-link to="/" tag="span" style="cursor: pointer">
           <h1 class="title pl-3">VueShare</h1>
@@ -88,7 +88,7 @@
         <v-snackbar v-model="authSnackbar" :timeout="5000" color="success" bottom left>
           <v-icon class="mr-3">mdi-checkbox-marked-circle</v-icon>
           <h3>You are now signed in</h3>
-          <v-btn dark flat @click="authSnackbar = false">Close</v-btn>
+          <v-btn dark @click="authSnackbar = false">Close</v-btn>
         </v-snackbar>
 
         <!-- Auth error snackbar -->
@@ -102,7 +102,7 @@
         >
           <v-icon class="mr-3">mdi-cancel</v-icon>
           <h3>{{authError.message}}</h3>
-          <v-btn dark flat to="/signin">Singin</v-btn>
+          <v-btn dark to="/signin">Singin</v-btn>
         </v-snackbar>
       </v-container>
     </main>
@@ -156,7 +156,7 @@ export default {
       if (this.user) {
         items = [
           { icon: "mdi-chat", title: "Posts", link: "/posts" },
-          { icon: "mdi-star", title: "Create Post", link: "/post/add" },
+          { icon: "mdi-star", title: "Create Post", link: "/posts/add" },
           { icon: "mdi-account-box", title: "Profile", link: "/profile" }
         ];
       }

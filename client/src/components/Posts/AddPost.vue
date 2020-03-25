@@ -56,7 +56,7 @@
           <!-- Description Text Area -->
           <v-row>
             <v-col cols="12">
-              <v-textarea v-model="desc" :rules="descRules" label="Description"></v-textarea>
+              <v-textarea v-model="description" :rules="descRules" label="Description"></v-textarea>
             </v-col>
           </v-row>
           <v-row>
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "AddPost",
   data() {
@@ -110,8 +111,25 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["loading", "user"]),
     imageCategories() {
       return ["Art", "Education", "Travel", "Technology"];
+    }
+  },
+  methods: {
+    handleAddPost() {
+      if (this.$refs.form.validate) {
+        // Add post action
+        this.$store.dispatch("addPost", {
+          title: this.title,
+          imageUrl: this.imageUrl,
+          categories: this.categories,
+          description: this.description,
+          creatorId: this.user._id
+        });
+        // Redirect to home page
+        this.$router.push("/");
+      }
     }
   }
 };
