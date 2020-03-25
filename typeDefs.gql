@@ -1,6 +1,12 @@
 type Query {
   getPosts: [Post]
   getCurrentUser: User
+  infiniteScrollPosts(pageNum: Int!, pageSize: Int!): PostsPage
+}
+
+type PostsPage {
+  posts: [Post]
+  hasMore: Boolean
 }
 
 type User {
