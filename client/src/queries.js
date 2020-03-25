@@ -1,5 +1,4 @@
 import gql from "graphql-tag";
-import { __Directive } from "graphql";
 
 /** POST QUERIES */
 export const GET_POSTS = gql`

@@ -1,40 +1,61 @@
 <template>
-  <v-container>
-    <h1>Posts</h1>
-    <ApolloQuery :query="getPostsQuery">
-      <template slot-scope="{ result: {loading, error, data} }">
-        <div v-if="loading">Loading...</div>
-        <div v-else-if="error">Error!</div>
-        <ul v-else v-for="post in data.getPosts" :key="post._id">
-          <li>
-            {{post.title}}
-            {{post.imageUrl}}
-            {{post.description}}
-          </li>
-        </ul>
-      </template>
-    </ApolloQuery>
+  <v-container text-xs-center v-if="infiniteScrollPosts">
+    <div v-for="post in infiniteScrollPosts.posts" :key="post._id">
+      <img :src="post.imageUrl" alt="post image" height="100px" />
+      <h3>{{post.title}}</h3>
+    </div>
+    <v-btn @click="showMorePosts" v-if="showMoreEnabled">Fetch More Data</v-btn>
   </v-container>
 </template>
 
 <script>
 import gql from "graphql-tag";
+import { INFINITE_SCROLL_POSTS } from "../../queries";
+
+const pageSize = 2;
+
 export default {
   name: "Posts",
   data() {
     return {
-      getPostsQuery: gql`
-        query {
-          getPosts {
-            _id
-            title
-            imageUrl
-            description
-            likes
-          }
-        }
-      `
+      pageNum: 1,
+      showMoreEnabled: true
     };
+  },
+  apollo: {
+    infiniteScrollPosts: {
+      query: INFINITE_SCROLL_POSTS,
+      variables: {
+        pageNum: 1,
+        pageSize
+      }
+    }
+  },
+  methods: {
+    showMorePosts() {
+      this.pageNum += 1;
+      // Fetch more data and transform the original result
+      this.$apollo.queries.infiniteScrollPosts.fetchMore({
+        variables: {
+          pageNum: this.pageNum,
+          pageSize
+        },
+        updateQuery: (prevResult, { fetchMoreResult }) => {
+          const newPosts = fetchMoreResult.infiniteScrollPosts.posts;
+          const hasMore = fetchMoreResult.infiniteScrollPosts.hasMore;
+          this.showMoreEnabled = hasMore;
+
+          return {
+            infiniteScrollPosts: {
+              __typename: prevResult.infiniteScrollPosts.__typename,
+              // Merge previous posts and new posts
+              posts: [...prevResult.infiniteScrollPosts.posts, ...newPosts],
+              hasMore
+            }
+          };
+        }
+      });
+    }
   }
 };
 </script>

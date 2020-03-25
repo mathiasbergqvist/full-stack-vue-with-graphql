@@ -48,13 +48,12 @@ module.exports = {
             path: "createdBy",
             model: "User"
           })
-          .skips(skips)
+          .skip(skips)
           .limit(pageSize);
-
-        const totalDocs = await Post.countDocuments();
-        const hasMore = totalDocs > pageSize * pageNum;
-        return { posts, hasMore };
       }
+      const totalDocs = await Post.countDocuments();
+      const hasMore = totalDocs > pageSize * pageNum;
+      return { posts, hasMore };
     }
   },
   // Mutations
