@@ -1,10 +1,55 @@
 <template>
-  <v-container text-xs-center v-if="infiniteScrollPosts">
-    <div v-for="post in infiniteScrollPosts.posts" :key="post._id">
-      <img :src="post.imageUrl" alt="post image" height="100px" />
-      <h3>{{post.title}}</h3>
-    </div>
-    <v-btn @click="showMorePosts" v-if="showMoreEnabled">Fetch More Data</v-btn>
+  <v-container v-if="infiniteScrollPosts" fluid>
+    <v-row dense>
+      <v-col v-for="post in infiniteScrollPosts.posts" :key="post._id" cols="12" sm="6">
+        <v-card hover>
+          <v-img
+            :src="post.imageUrl"
+            class="white--text align-end"
+            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            height="250px"
+            lazy
+          >
+            <v-card-title v-text="post.title"></v-card-title>
+          </v-img>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <div>
+              <span class="grey--text">{{post.likes}} likes - {{post.messages.length}} comments</span>
+            </div>
+            <v-spacer></v-spacer>
+            <v-btn @click="showPostCreator = !showPostCreator" icon>
+              <v-icon v-if="showPostCreator">mdi-chevron-up</v-icon>
+              <v-icon v-else>mdi-chevron-down</v-icon>
+            </v-btn>
+          </v-card-actions>
+          <!-- Post creator title -->
+          <v-slide-y-transition>
+            <v-card-text v-show="showPostCreator" class="grey lighten-4">
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon color="secondary">mdi-information</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="post.createdBy.username"></v-list-item-title>
+                  <v-list-item-subtitle v-text="post.createdDate"></v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-avatar>
+                  <v-img :src="post.createdBy.avatar"></v-img>
+                </v-list-item-avatar>
+              </v-list-item>
+            </v-card-text>
+          </v-slide-y-transition>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Show more button -->
+    <v-layout v-if="showMoreEnabled" column>
+      <div class="text-center">
+        <v-btn color="info" @click="showMorePosts" style="margin-top: 30px">Fetch More</v-btn>
+      </div>
+    </v-layout>
   </v-container>
 </template>
 
@@ -19,7 +64,8 @@ export default {
   data() {
     return {
       pageNum: 1,
-      showMoreEnabled: true
+      showMoreEnabled: true,
+      showPostCreator: false
     };
   },
   apollo: {
