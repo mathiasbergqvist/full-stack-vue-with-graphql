@@ -40,6 +40,59 @@
           </v-card-text>
         </v-card>
       </v-row>
+      <!-- Messages section -->
+      <v-row align="center" justify="center">
+        <div class="mt-3" style="width: 80%">
+          <v-layout class="mb-3" v-if="!user">
+            <v-flex xs12>
+              <v-form>
+                <v-row>
+                  <v-flex xs12>
+                    <v-text-field
+                      clearable
+                      append-outer-icon="mdi-send"
+                      prepend-icon="mdi-email"
+                      label="Add message"
+                      type="text"
+                      reqired
+                    ></v-text-field>
+                  </v-flex>
+                </v-row>
+              </v-form>
+            </v-flex>
+          </v-layout>
+          <v-layout wrap>
+            <v-row>
+              <v-flex xs12>
+                <v-list subheader two-line>
+                  <v-subheader>Messages ({{getPost.messages.length}})</v-subheader>
+                  <template v-for="message in getPost.messages">
+                    <v-divider :key="message._id"></v-divider>
+                    <v-list-item :key="message.title">
+                      <v-list-item-avatar>
+                        <v-img :src="message.messageUser.avatar"></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title v-text="message.messageBody"></v-list-item-title>
+                        <v-list-item-title-subtitle v-text="message.messageUser.username">
+                          <span
+                            class="grey--text text--lighten-1 hidden-xs-only"
+                          >{{message.messageDate}}</span>
+                        </v-list-item-title-subtitle>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        <v-btn icon>
+                          <v-icon color="grey lighten-1">mdi-chat</v-icon>
+                        </v-btn>
+                      </v-list-item-action>
+                    </v-list-item>
+                  </template>
+                </v-list>
+              </v-flex>
+            </v-row>
+          </v-layout>
+        </div>
+      </v-row>
     </v-container>
   </v-content>
 </template>
