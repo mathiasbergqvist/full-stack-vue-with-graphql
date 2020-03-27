@@ -2,7 +2,7 @@
   <v-container v-if="infiniteScrollPosts" fluid>
     <v-row dense>
       <v-col v-for="post in infiniteScrollPosts.posts" :key="post._id" cols="12" sm="6">
-        <v-card hover>
+        <v-card hover @click.native="goToPost(post._id)">
           <v-img
             :src="post.imageUrl"
             class="white--text align-end"
@@ -78,6 +78,9 @@ export default {
     }
   },
   methods: {
+    goToPost(postId) {
+      this.$router.push(`/posts/${postId}`);
+    },
     showMorePosts() {
       this.pageNum += 1;
       // Fetch more data and transform the original result
