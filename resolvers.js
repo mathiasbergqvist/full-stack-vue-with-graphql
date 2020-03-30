@@ -65,6 +65,24 @@ module.exports = {
   },
   // Mutations
   Mutation: {
+    addPostMessage: async (_, { messageBody, userId, postId }, { Post }) => {
+      const newMessage = {
+        messageBody,
+        messageUser: userId
+      };
+      const post = await Post.findOneAndUpdate(
+        // Find post by id
+        { _id: postId },
+        // Prepend (push) new message to beginning of messages array
+        { $push: { messages: { $each: [newMessage], $position: 0 } } },
+        // Return fresh document after update
+        { new: true }
+      ).populate({
+        path: "messages.messageUser",
+        model: "User"
+      });
+      return post.messages[0];
+    },
     // Object destruct args, context
     signupUser: async (_, { username, email, password }, { User }) => {
       const user = await User.findOne({ username });
