@@ -43,17 +43,19 @@
       <!-- Messages section -->
       <v-row align="center" justify="center">
         <div class="mt-3" style="width: 80%">
-          <v-layout class="mb-3" v-if="!user">
+          <v-layout class="mb-3" v-if="user">
             <v-flex xs12>
-              <v-form>
+              <v-form @submit.prevent="handleAddPostMessage">
                 <v-row>
                   <v-flex xs12>
                     <v-text-field
+                      v-model="messageBody"
                       clearable
-                      append-outer-icon="mdi-send"
+                      :append-outer-icon="messageBody && 'mdi-send'"
                       prepend-icon="mdi-email"
                       label="Add message"
                       type="text"
+                      @click:append-outer="handleAddPostMessage"
                       reqired
                     ></v-text-field>
                   </v-flex>
@@ -74,11 +76,11 @@
                       </v-list-item-avatar>
                       <v-list-item-content>
                         <v-list-item-title v-text="message.messageBody"></v-list-item-title>
-                        <v-list-item-title-subtitle v-text="message.messageUser.username">
+                        <v-list-item-subtitle v-text="message.messageUser.username">
                           <span
                             class="grey--text text--lighten-1 hidden-xs-only"
                           >{{message.messageDate}}</span>
-                        </v-list-item-title-subtitle>
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-action>
                         <v-btn icon>
@@ -98,7 +100,7 @@
 </template>
 
 <script>
-import { GET_POST } from "../../queries";
+import { GET_POST, ADD_POST_MESSAGE } from "../../queries";
 import { mapGetters } from "vuex";
 
 export default {
@@ -106,7 +108,8 @@ export default {
   props: ["postId"],
   data() {
     return {
-      dialog: false
+      dialog: false,
+      messageBody: ""
     };
   },
   apollo: {
@@ -123,6 +126,34 @@ export default {
     ...mapGetters(["user"])
   },
   methods: {
+    handleAddPostMessage() {
+      const variables = {
+        messageBody: this.messageBody,
+        userId: this.user._id,
+        postId: this.postId
+      };
+      this.$apollo
+        .mutate({
+          mutation: ADD_POST_MESSAGE,
+          variables,
+          update: (cache, { data: { addPostMessage } }) => {
+            const data = cache.readQuery({
+              query: GET_POST,
+              variables: { postId: this.postId }
+            });
+            data.getPost.messages.unshift(addPostMessage);
+            cache.writeQuery({
+              query: GET_POST,
+              variables: { postId: this.postId },
+              data
+            });
+          }
+        })
+        .then(({ data }) => {
+          console.log(data.addPostMessage);
+        })
+        .catch(err => console.error(err));
+    },
     goToPreviousPage() {
       this.$router.go(-1);
     },
