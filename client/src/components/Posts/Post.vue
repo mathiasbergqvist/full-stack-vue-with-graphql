@@ -6,8 +6,8 @@
         <v-card hover>
           <v-card-title>
             <h1>{{getPost.title}}</h1>
-            <v-btn icon large v-if="user" @click="handleLikePost">
-              <v-icon large color="grey">mdi-heart</v-icon>
+            <v-btn icon large v-if="user" @click="handleToggleLike">
+              <v-icon large :color="checkIfPostLiked(getPost._id) ? 'red' : 'gray'">mdi-heart</v-icon>
             </v-btn>
             <h3 class="ml-3 font-weight-thin">{{getPost.likes}} LIKES</h3>
             <v-spacer></v-spacer>
@@ -121,6 +121,7 @@ export default {
   props: ["postId"],
   data() {
     return {
+      postLiked: false,
       dialog: false,
       messageBody: "",
       isFormValid: true,
@@ -142,9 +143,22 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "userFavorites"])
   },
   methods: {
+    checkIfPostLiked(postId) {
+      // Check if user favorites includes post with id of 'postId'
+      if (
+        this.userFavorites &&
+        this.userFavorites.some(fave => fave._id === postId)
+      ) {
+        this.postLiked = true;
+        return true;
+      } else {
+        this.postLiked = false;
+        return false;
+      }
+    },
     handleAddPostMessage() {
       if (this.$refs.form.validate()) {
         const variables = {
@@ -173,6 +187,13 @@ export default {
             this.$refs.form.reset();
           })
           .catch(err => console.error(err));
+      }
+    },
+    handleToggleLike() {
+      if (this.postLiked) {
+        this.handleUnlikePost();
+      } else {
+        this.handleLikePost();
       }
     },
     handleLikePost() {
