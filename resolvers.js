@@ -111,7 +111,7 @@ module.exports = {
         { new: true }
       );
       // Find user, remove id of post to its favouries array (which will be populated as post)
-      const user = User.findOneAndUpdate(
+      const user = await User.findOneAndUpdate(
         { username },
         { $pull: { favorites: postId } },
         { new: true }
