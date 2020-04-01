@@ -45,7 +45,15 @@
         <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
-        <v-text-field flex label="Search" color="accent" single-line hide-details></v-text-field>
+        <v-text-field
+          flex
+          label="Search"
+          color="accent"
+          single-line
+          hide-details
+          v-model="searchTerm"
+          @input="handleSearchPosts"
+        ></v-text-field>
 
         <v-spacer></v-spacer>
 
@@ -125,7 +133,8 @@ export default {
       authSnackbar: false,
       authErrorSnackbar: false,
       sideNav: false,
-      badgeAnimated: false
+      badgeAnimated: false,
+      searchTerm: ""
     };
   },
   watch: {
@@ -183,6 +192,11 @@ export default {
     },
     toggleSideNav() {
       this.sideNav = !this.sideNav;
+    },
+    handleSearchPosts() {
+      this.$store.dispatch("searchPosts", {
+        searchTerm: this.searchTerm
+      });
     }
   }
 };

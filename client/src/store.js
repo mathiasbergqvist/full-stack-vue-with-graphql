@@ -6,7 +6,8 @@ import {
   SIGNIN_USER,
   SIGNUP_USER,
   GET_CURRENT_USER,
-  ADD_POST
+  ADD_POST,
+  SEARCH_POST
 } from "./queries";
 import router from "./router";
 
@@ -103,6 +104,18 @@ export default new Vuex.Store({
         })
         .then((cache, { data }) => {
           console.log("DATA", data);
+        })
+        .catch(err => console.error(err));
+    },
+    searchPosts: ({ commit }, payload) => {
+      console.log("Store search", payload);
+      apolloClient
+        .query({
+          query: SEARCH_POST,
+          variables: payload
+        })
+        .then(({ data }) => {
+          console.log(data);
         })
         .catch(err => console.error(err));
     },
