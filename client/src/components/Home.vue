@@ -34,7 +34,7 @@ export default {
     this.handleGetCarouselPosts();
   },
   computed: {
-    ...mapGetters(["loaders", "posts"])
+    ...mapGetters(["loading", "posts"])
   },
   methods: {
     handleGetCarouselPosts() {

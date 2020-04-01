@@ -55,6 +55,17 @@
           @input="handleSearchPosts"
         ></v-text-field>
 
+        <!-- Search result card -->
+        <v-card color="accent" v-if="searchResults.length" id="search__card">
+          <v-list>
+            <v-list-item v-for="result in searchResults" :key="result._id">
+              <v-list-item-title v-text="result.title">
+                <span class="font-weight-thin">{{result.description}}</span>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-card>
+
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-xs-only">
@@ -158,7 +169,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["authError", "user", "userFavorites"]),
+    ...mapGetters([
+      "authError",
+      "user",
+      "userFavorites",
+      "searchResults",
+      "loading"
+    ]),
     horizontalNavItem() {
       let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
@@ -240,5 +257,12 @@ export default {
   90% {
     transform: translate3d(0, -4px, 0);
   }
+}
+#search__card {
+  position: absolute;
+  width: 100vw;
+  z-index: 8;
+  top: 100%;
+  left: 0;
 }
 </style>
