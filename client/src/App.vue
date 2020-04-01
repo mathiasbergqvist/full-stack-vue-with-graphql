@@ -64,10 +64,16 @@
           <!-- Profile button -->
           <v-btn to="/profile" v-if="user" style="width: 120px" icon>
             <v-icon class="hidden-sm-only" left>mdi-account-box</v-icon>
-            <v-badge right color="blue darken-2">
-              <span slot="badge">1</span>
+            <v-badge
+              v-if="userFavorites.length"
+              right
+              color="blue darken-2"
+              :class="{'bonce': badgeAnimated}"
+            >
+              <span slot="badge">{{userFavorites.length}}</span>
               Profile
             </v-badge>
+            <span v-else>Profile</span>
           </v-btn>
 
           <!-- Signout button -->
@@ -118,7 +124,8 @@ export default {
     return {
       authSnackbar: false,
       authErrorSnackbar: false,
-      sideNav: false
+      sideNav: false,
+      badgeAnimated: false
     };
   },
   watch: {
@@ -132,10 +139,17 @@ export default {
       if (value !== null) {
         this.authErrorSnackbar = true;
       }
+    },
+    userFavorites(value) {
+      // If user favorites value change at all
+      if (value) {
+        this.badgeAnimated = true;
+        setTimeout(() => (this.badgeAnimated = false), 100);
+      }
     }
   },
   computed: {
-    ...mapGetters(["authError", "user"]),
+    ...mapGetters(["authError", "user", "userFavorites"]),
     horizontalNavItem() {
       let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
@@ -189,5 +203,28 @@ export default {
 .fade-leave-active {
   transform: translateY(-25px);
   opacity: 0;
+}
+/* User favorite animation */
+.bonce {
+  animation: bounce 1s both;
+}
+@keyframes bounce {
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    transform: translate3d(0, -20px, 0);
+  }
+  70% {
+    transform: translate3d(0, -10px, 0);
+  }
+  90% {
+    transform: translate3d(0, -4px, 0);
+  }
 }
 </style>
