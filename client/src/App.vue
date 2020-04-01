@@ -58,10 +58,13 @@
         <!-- Search result card -->
         <v-card color="accent" v-if="searchResults.length" id="search__card">
           <v-list>
-            <v-list-item v-for="result in searchResults" :key="result._id">
-              <v-list-item-title v-text="result.title">
-                <span class="font-weight-thin">{{result.description}}</span>
-              </v-list-item-title>
+            <v-list-item
+              v-for="result in searchResults"
+              :key="result._id"
+              @click="goToSearchResult(result._id)"
+            >
+              <v-list-item-title>{{result.title}}</v-list-item-title>
+              <v-list-item-subtitle class="font-weight-thin">{{result.description}}</v-list-item-subtitle>
             </v-list-item>
           </v-list>
         </v-card>
@@ -207,6 +210,9 @@ export default {
     handleUserSignout() {
       this.$store.dispatch("signoutUser");
     },
+    formatDescription(desc) {
+      return desc.lenght > 10 ? `${desc.slice(0, 10)}...` : desc;
+    },
     toggleSideNav() {
       this.sideNav = !this.sideNav;
     },
@@ -214,6 +220,14 @@ export default {
       this.$store.dispatch("searchPosts", {
         searchTerm: this.searchTerm
       });
+    },
+    goToSearchResult(resultId) {
+      // Clear search term
+      this.searchTerm = "";
+      // Go to desired results
+      this.$router.push(`/posts/${resultId}`);
+      // Clear search results
+      this.$store.commit("clearSearchResults");
     }
   }
 };
