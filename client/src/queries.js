@@ -40,6 +40,20 @@ export const GET_POST = gql`
   }
 `;
 
+export const GET_USER_POST = gql`
+  query($userId: ID!) {
+    getUserPosts(userId: $userId) {
+      _id
+      title
+      imageUrl
+      categories
+      description
+      createdDate
+      likes
+    }
+  }
+`;
+
 export const SEARCH_POST = gql`
   query($searchTerm: String) {
     searchPosts(searchTerm: $searchTerm) {
