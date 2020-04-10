@@ -32,7 +32,7 @@
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title v-text="post.createdBy.username"></v-list-item-title>
-                  <v-list-item-subtitle v-text="post.createdDate"></v-list-item-subtitle>
+                  <v-list-item-subtitle v-text="formatCreatedDate(post.createdDate)"></v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-avatar>
                   <v-img :src="post.createdBy.avatar"></v-img>
@@ -56,6 +56,7 @@
 <script>
 import gql from "graphql-tag";
 import { INFINITE_SCROLL_POSTS } from "../../queries";
+import moment from "moment";
 
 const pageSize = 2;
 
@@ -104,6 +105,9 @@ export default {
           };
         }
       });
+    },
+    formatCreatedDate(date) {
+      return moment(new Date(date)).format("ll");
     }
   }
 };

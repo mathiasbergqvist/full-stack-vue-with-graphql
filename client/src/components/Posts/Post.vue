@@ -82,11 +82,10 @@
                       </v-list-item-avatar>
                       <v-list-item-content>
                         <v-list-item-title v-text="message.messageBody"></v-list-item-title>
-                        <v-list-item-subtitle v-text="message.messageUser.username">
-                          <span
-                            class="grey--text text--lighten-1 hidden-xs-only"
-                          >{{message.messageDate}}</span>
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle v-text="message.messageUser.username"></v-list-item-subtitle>
+                        <span
+                          class="grey--text text--lighten-1 hidden-xs-only"
+                        >{{getTimeFromNow(message.messageDate)}}</span>
                       </v-list-item-content>
                       <v-list-item-action>
                         <v-btn icon>
@@ -115,6 +114,7 @@ import {
   UNLIKE_POST
 } from "../../queries";
 import { mapGetters } from "vuex";
+import moment from "moment";
 
 export default {
   name: "Post",
@@ -266,6 +266,9 @@ export default {
     },
     checkIfOwnMessage(message) {
       return this.user && this.user._id === message.messageUser._id;
+    },
+    getTimeFromNow(time) {
+      return moment(new Date(time)).fromNow();
     }
   }
 };

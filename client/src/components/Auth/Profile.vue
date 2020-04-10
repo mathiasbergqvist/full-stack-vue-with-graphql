@@ -8,7 +8,7 @@
             <v-card-title primary-title>
               <div>
                 <div class="headline">{{user.username}}</div>
-                <div>Joined: {{user.joinDate}}</div>
+                <div>Joined: {{formatJoinDate(user.joinDate)}}</div>
               </div>
             </v-card-title>
             <v-card-subtitle>
@@ -170,6 +170,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import moment from "moment";
 
 export default {
   name: "Profile",
@@ -236,6 +237,9 @@ export default {
           postId: post._id
         });
       }
+    },
+    formatJoinDate(date) {
+      return moment(new Date(date)).format("ll");
     },
     loadPost(
       { _id, title, imageUrl, categories, description },
