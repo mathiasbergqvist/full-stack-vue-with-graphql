@@ -11,6 +11,7 @@ import {
   SEARCH_POST,
   UPDATE_USER_POST,
   DELETE_USER_POST,
+  INFINITE_SCROLL_POSTS,
 } from "./queries";
 import router from "./router";
 
@@ -130,6 +131,16 @@ export default new Vuex.Store({
               ...payload,
             },
           },
+          // Rerun spesific queries after performing the mutation in order to get fresh data
+          refetchQueries: [
+            {
+              query: INFINITE_SCROLL_POSTS,
+              variables: {
+                pageNum: 1,
+                pageSize: 2,
+              },
+            },
+          ],
         })
         .then((cache, { data }) => {
           console.log("DATA", data);
