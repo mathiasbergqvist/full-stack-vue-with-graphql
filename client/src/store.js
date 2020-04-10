@@ -10,6 +10,7 @@ import {
   ADD_POST,
   SEARCH_POST,
   UPDATE_USER_POST,
+  DELETE_USER_POST,
 } from "./queries";
 import router from "./router";
 
@@ -160,6 +161,24 @@ export default new Vuex.Store({
           const userPosts = [
             ...state.userPosts.slice(0, index),
             data.updateUserPost,
+            ...state.userPost.slice(index + 1),
+          ];
+          commit("setUserPost", userPosts);
+        })
+        .catch((err) => console.error(err));
+    },
+    deleteUserPost: ({ state, commit }, payload) => {
+      apolloClient
+        .mutate({
+          mutation: DELETE_USER_POST,
+          variables: payload,
+        })
+        .then((data) => {
+          const index = state.userPosts.findIndex(
+            (post) => post._id === data.deleteUserPost._id
+          );
+          const userPosts = [
+            ...state.userPosts.slice(0, index),
             ...state.userPost.slice(index + 1),
           ];
           commit("setUserPost", userPosts);

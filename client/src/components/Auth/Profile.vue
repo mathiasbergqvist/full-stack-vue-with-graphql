@@ -75,7 +75,7 @@
                 <v-btn color="info" floating fab small dark @click="loadPost(post)">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn color="error" floating fab small dark>
+                <v-btn color="error" floating fab small dark @click="handleDeleteUserPost(post)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-card-actions>
@@ -224,6 +224,17 @@ export default {
           description: this.description
         });
         this.editPostDialog = false;
+      }
+    },
+    handleDeleteUserPost(post) {
+      this.loadPost(post, false);
+      const deletePost = window.confirm(
+        "Are you sure you want to delete this post?"
+      );
+      if (deletePost) {
+        this.$store.dispatch("deleteUserPost", {
+          postId: post._id
+        });
       }
     },
     loadPost(
